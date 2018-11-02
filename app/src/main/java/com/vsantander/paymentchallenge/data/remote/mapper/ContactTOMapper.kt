@@ -10,7 +10,8 @@ class ContactTOMapper @Inject constructor() {
     private fun toEntity(value: ContactTO): Contact = Contact(
             name = value.name,
             phone = "",
-            avatar = AvatarUrlProvider.getAvatarFromThumbnail(value.thumbnail))
+            avatar = AvatarUrlProvider.getAvatarFromThumbnail(value.thumbnail),
+            isSelected = false)
 
     fun toEntity(values: List<ContactTO>): List<Contact> = values.map { toEntity(it) }
 }

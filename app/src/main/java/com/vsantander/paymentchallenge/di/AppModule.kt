@@ -1,7 +1,8 @@
 package com.vsantander.paymentchallenge.di
 
+import android.content.ContentResolver
 import com.vsantander.paymentchallenge.data.remote.RestClient
-import com.vsantander.paymentchallenge.data.remote.utils.APIParamsProvider
+import com.vsantander.paymentchallenge.presentation.PaymentApp
 import com.vsantander.paymentchallenge.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -34,11 +35,9 @@ class AppModule {
                 .build()
                 .create<RestClient>(RestClient::class.java)
     }
-
-//    @Singleton
-//    @Provides
-//    fun providesAPIParamsProvider(): APIParamsProvider {
-//        return APIParamsProvider()
-//    }
+    
+    @Provides
+    fun providesContentResolver(applicationContext: PaymentApp): ContentResolver =
+            applicationContext.contentResolver
 
 }

@@ -9,4 +9,6 @@ object Constants {
     const val CHARACTERS_ORDERED_BY = "name"
 
     const val DURATION_FADE_GLIDE = 1000 // in miliseconds
+
+    const val READ_CONTACTS_PERMISSION = 2000
 }

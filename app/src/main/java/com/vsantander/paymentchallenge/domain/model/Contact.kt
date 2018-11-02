@@ -7,5 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class Contact(
         val name: String,
         val phone: String?,
-        val avatar: String
+        val avatar: String,
+        var isSelected: Boolean
 ) : Parcelable

@@ -29,6 +29,13 @@ class ContactItem @JvmOverloads constructor(
             phoneTextView.text = it
         }
 
+        selectorChecked.isChecked = item.isSelected
+
+        selectorChecked.setOnClickListener {
+            selectorChecked.isChecked = !selectorChecked.isChecked
+            item.isSelected = selectorChecked.isChecked
+        }
+
         Glide
                 .with(context)
                 .load(item.avatar)

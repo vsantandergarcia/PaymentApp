@@ -72,6 +72,8 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3LoggingInterceptor"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    implementation "pub.devrel:easypermissions:$rootProject.easyPermissionsVersion"
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
     /* android view vendor utils */
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"

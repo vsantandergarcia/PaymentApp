@@ -44,6 +44,8 @@ ext {
     retrofitVersion = '2.3.0'
     okhttp3LoggingInterceptor = '3.8.0'
     timberVersion = '4.7.1'
+    easyPermissionsVersion = '2.0.0'
+    ktxVersion = '0.3'
 
     /* android view utils */
     glideVersion = '4.3.0'

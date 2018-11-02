@@ -20,6 +20,7 @@ class SplashActivity: BaseActivity() {
     private val runnable: Runnable = Runnable {
         if (!isFinishing) {
             startActivity<ContactListActivity>()
+            finish()
         }
     }
 
