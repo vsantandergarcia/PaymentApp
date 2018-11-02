@@ -31,15 +31,14 @@ class ContactItem @JvmOverloads constructor(
 
         selectorChecked.isChecked = item.isSelected
 
-        selectorChecked.setOnClickListener {
-            selectorChecked.isChecked = !selectorChecked.isChecked
-            item.isSelected = selectorChecked.isChecked
-        }
-
         Glide
                 .with(context)
                 .load(item.avatar)
                 .transition(DrawableTransitionOptions.withCrossFade(Constants.DURATION_FADE_GLIDE))
                 .into(contactImageView)
+    }
+
+    fun onSelectorClickListener() {
+        selectorChecked.isChecked = !selectorChecked.isChecked
     }
 }

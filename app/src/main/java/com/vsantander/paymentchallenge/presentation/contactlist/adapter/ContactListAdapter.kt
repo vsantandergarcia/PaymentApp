@@ -6,12 +6,11 @@ import com.vsantander.paymentchallenge.presentation.base.adapter.RecyclerViewAda
 import com.vsantander.paymentchallenge.presentation.base.adapter.ViewWrapper
 import com.vsantander.paymentchallenge.presentation.base.item.ItemView
 import com.vsantander.paymentchallenge.presentation.contactlist.item.ContactItem
+import kotlinx.android.synthetic.main.view_item_contact.view.*
 
 class ContactListAdapter : RecyclerViewAdapterBase<Contact, ItemView<Contact>>() {
 
-    var onClickAction: ((item: Contact) -> Unit)? = null
-
-    var isClickable = false
+    var onClickSelectorAction: ((item: Contact) -> Unit)? = null
 
     override fun onCreateItemView(parent: ViewGroup, viewType: Int): ItemView<Contact> {
         return ContactItem(parent.context)
@@ -28,10 +27,10 @@ class ContactListAdapter : RecyclerViewAdapterBase<Contact, ItemView<Contact>>()
             bind(item)
         }
 
-        holder.view.setOnClickListener {
-            if (isClickable) {
-                onClickAction?.invoke(items[position])
-            }
+        (holder.view as ContactItem).selectorChecked.setOnClickListener {
+            holder.view.onSelectorClickListener()
+            item.isSelected = holder.view.selectorChecked.isChecked
+            onClickSelectorAction?.invoke(items[position])
         }
     }
 }

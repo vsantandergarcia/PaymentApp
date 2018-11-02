@@ -35,6 +35,7 @@ ext {
 
     /* android architecture components */
     archLifecycleVersion = '1.1.1'
+    roomVersion = '1.1.1'
 
     /* kotlin/java utils */
     daggerVersion = '2.17'
@@ -49,6 +50,9 @@ ext {
 
     /* android view utils */
     glideVersion = '4.3.0'
+
+    /* Tools */
+    stethoVersion = '1.5.0'
 
     /* unit testing */
     junitVersion = '4.12'

@@ -1,6 +1,8 @@
 package com.vsantander.paymentchallenge.di
 
+import android.arch.persistence.room.Room
 import android.content.ContentResolver
+import com.vsantander.paymentchallenge.data.persistence.Database
 import com.vsantander.paymentchallenge.data.remote.RestClient
 import com.vsantander.paymentchallenge.presentation.PaymentApp
 import com.vsantander.paymentchallenge.utils.Constants
@@ -39,5 +41,10 @@ class AppModule {
     @Provides
     fun providesContentResolver(applicationContext: PaymentApp): ContentResolver =
             applicationContext.contentResolver
+
+    @Singleton
+    @Provides
+    fun provideDatabase(applicationContext: PaymentApp): Database = Room.databaseBuilder<Database>(
+            applicationContext, Database::class.java, "database.db").build()
 
 }

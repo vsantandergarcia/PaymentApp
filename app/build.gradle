@@ -54,6 +54,9 @@ dependencies {
 
     /* android architecture components */
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
+    implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
+    kapt "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
     /* kotlin core */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -78,6 +81,9 @@ dependencies {
     /* android view vendor utils */
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+
+    /* Tools */
+    implementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
 
     /* Unit Testing */
     testImplementation "junit:junit:$rootProject.junitVersion"

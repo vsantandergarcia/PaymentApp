@@ -2,6 +2,7 @@ package com.vsantander.paymentchallenge.presentation
 
 import android.app.Activity
 import android.app.Application
+import com.facebook.stetho.Stetho
 import com.vsantander.paymentchallenge.di.AppInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -20,5 +21,8 @@ class PaymentApp : Application(), HasActivityInjector {
 
         // Dagger 2 injection
         AppInjector.init(this)
+
+        //init Stetho
+        Stetho.initializeWithDefaults(this)
     }
 }

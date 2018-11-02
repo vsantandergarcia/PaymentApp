@@ -50,8 +50,13 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
     private fun setUpViews() {
         setUpToolbar()
         adapter = ContactListAdapter().apply {
-            onClickAction = {
-                Timber.d("item client click with name:${it.name}")
+            onClickSelectorAction = {
+                Timber.d("item selector click with name:${it.name}")
+                if (it.isSelected) {
+                    viewModel.saveSelectedContact(it)
+                } else {
+                    viewModel.deleteSelectedContact(it)
+                }
             }
         }
 
@@ -82,7 +87,6 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
 
             if (resource.status == Status.SUCCESS) {
                 adapter.setItems(resource.data!!)
-                adapter.isClickable = true
             } else if (resource.status == Status.FAILED) {
                 Snackbar.make(recyclerView, R.string.common_error, Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.retry) { viewModel.loadInfo() }

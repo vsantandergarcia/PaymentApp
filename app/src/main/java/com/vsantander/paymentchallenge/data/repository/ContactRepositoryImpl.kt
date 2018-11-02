@@ -3,20 +3,27 @@ package com.vsantander.paymentchallenge.data.repository
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.ContactsContract
+import com.vsantander.paymentchallenge.data.persistence.Database
+import com.vsantander.paymentchallenge.data.persistence.mapper.ContactEntityMapper
 import com.vsantander.paymentchallenge.data.remote.RestClient
 import com.vsantander.paymentchallenge.data.remote.mapper.ContactTOMapper
 import com.vsantander.paymentchallenge.data.remote.utils.APIParamsProvider
 import com.vsantander.paymentchallenge.domain.model.Contact
 import com.vsantander.paymentchallenge.utils.Constants
+import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.zipWith
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ContactRepositoryImpl @Inject constructor(
         private val restClient: RestClient,
-        private val mapper: ContactTOMapper,
-        private val contentResolver: ContentResolver
+        private val contactTOMapper: ContactTOMapper,
+        private val contentResolver: ContentResolver,
+        private val database: Database,
+        private val contactEntityMapper: ContactEntityMapper
 ) : ContactRepository {
 
     override fun getCharacters(): Single<List<Contact>> {
@@ -28,8 +35,12 @@ class ContactRepositoryImpl @Inject constructor(
                 limit = Constants.LIMIT_CHARACTERS,
                 orderBy = Constants.CHARACTERS_ORDERED_BY
         ).map {
-            mapper.toEntity(it.data.results)
-        }
+            contactTOMapper.toEntity(it.data.results)
+        }.zipWith(getAllSelectedContacts().map { contact -> contact.map { it.name } },
+                BiFunction<List<Contact>, List<String>, List<Contact>>
+                { contacts, selectedContacts ->
+                    contacts.onEach { it.isSelected = selectedContacts.contains(it.name) }
+                })
     }
 
     @SuppressLint("Recycle")
@@ -64,8 +75,32 @@ class ContactRepositoryImpl @Inject constructor(
             cursor.close()
         }
 
-
         return Single.just(contactList)
+                .zipWith(getAllSelectedContacts().map { contact -> contact.map { it.name } },
+                        BiFunction<List<Contact>, List<String>, List<Contact>>
+                        { contacts, selectedContacts ->
+                            contacts.onEach { it.isSelected = selectedContacts.contains(it.name) }
+                        })
     }
+
+    override fun getAllSelectedContacts(): Single<List<Contact>> {
+        return database.selectedContactsDao().getAll()
+                .map { contactEntityMapper.toEntity(it) }
+    }
+
+    override fun saveSelectedContact(contact: Contact): Completable {
+        return Completable.fromCallable {
+            database.selectedContactsDao().insertOrUpdate(
+                    contactEntityMapper.fromEntity(contact)
+            )
+        }
+    }
+
+    override fun deleteSelectedContact(contact: Contact): Completable {
+        return Completable.fromCallable {
+            database.selectedContactsDao().delete(contact.name)
+        }
+    }
+
 
 }
