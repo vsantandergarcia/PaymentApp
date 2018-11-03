@@ -32,7 +32,7 @@ class ContactListViewModel @Inject constructor(
 
     var readContactsPermissionAccepted = false
 
-    fun loadInfo() {
+    fun loadContacts() {
         resource.value = Resource.loading()
 
         disposables += getContacts.buildUseCase(readContactsPermissionAccepted)
@@ -40,11 +40,11 @@ class ContactListViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onSuccess = {
-                            Timber.d("loadInfo.onComplete")
+                            Timber.d("loadContacts.onComplete")
                             resource.value = Resource.success(it)
                         },
                         onError = {
-                            Timber.e("loadInfo.onError ${it.message}")
+                            Timber.e("loadContacts.onError ${it.message}")
                             resource.value = Resource.error(it)
                         }
                 )

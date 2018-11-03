@@ -17,7 +17,10 @@ import timber.log.Timber
 import javax.inject.Inject
 import pub.devrel.easypermissions.EasyPermissions
 import androidx.core.view.isVisible
+import com.vsantander.paymentchallenge.R.id.swipeRefreshLayout
+import com.vsantander.paymentchallenge.presentation.amountselector.AmountSelectorActivity
 import com.vsantander.paymentchallenge.utils.Constants
+import org.jetbrains.anko.startActivity
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 
@@ -39,10 +42,10 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_list)
         setUpViews()
-        setUpViewModels()
+        setUpViewModel()
 
         checkPermissions()
-        viewModel.loadInfo()
+        viewModel.loadContacts()
     }
 
     /* setUp methods */
@@ -60,7 +63,7 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
             }
         }
 
-        swipeRefreshLayout.setOnRefreshListener { viewModel.loadInfo() }
+        swipeRefreshLayout.setOnRefreshListener { viewModel.loadContacts() }
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context,
                     LinearLayoutManager.VERTICAL, false) as RecyclerView.LayoutManager
@@ -69,7 +72,7 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
 
         stepperButton.setTitle(R.string.contact_list_select_amount)
         stepperButton.setOnClickListener {
-            //TODO
+            startActivity<AmountSelectorActivity>()
         }
     }
 
@@ -79,7 +82,7 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
-    private fun setUpViewModels() {
+    private fun setUpViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ContactListViewModel::class.java)
 
@@ -93,7 +96,7 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
                 adapter.setItems(resource.data!!)
             } else if (resource.status == Status.FAILED) {
                 Snackbar.make(recyclerView, R.string.common_error, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.retry) { viewModel.loadInfo() }
+                        .setAction(R.string.retry) { viewModel.loadContacts() }
                         .show()
             }
         }
@@ -125,7 +128,7 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
 
         viewModel.readContactsPermissionAccepted = true
-        viewModel.loadInfo()
+        viewModel.loadContacts()
     }
 
     @AfterPermissionGranted(Constants.READ_CONTACTS_PERMISSION)

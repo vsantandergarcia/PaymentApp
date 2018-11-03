@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.vsantander.paymentchallenge.presentation.base.viewmodel.ViewModelFactory
 import com.vsantander.paymentchallenge.presentation.contactlist.ContactListViewModel
+import com.vsantander.paymentchallenge.presentation.summary.SummaryViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -18,5 +19,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ContactListViewModel::class)
     abstract fun bindContactListViewModel(viewModel: ContactListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SummaryViewModel::class)
+    abstract fun bindSummaryViewModel(viewModel: SummaryViewModel): ViewModel
 
 }

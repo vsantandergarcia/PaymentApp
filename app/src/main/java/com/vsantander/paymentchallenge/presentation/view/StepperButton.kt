@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.vsantander.paymentchallenge.R
 import kotlinx.android.synthetic.main.view_stepper_button.view.*
+import org.jetbrains.anko.dimen
 
 class StepperButton @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -15,7 +16,7 @@ class StepperButton @JvmOverloads constructor(
     init {
         RelativeLayout.inflate(context, R.layout.view_stepper_button, this)
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT)
+                dimen(R.dimen.contact_view_stepper_height))
     }
 
     fun setTitle(value: String) {
