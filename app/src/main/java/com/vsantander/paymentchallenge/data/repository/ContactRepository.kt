@@ -49,4 +49,11 @@ interface ContactRepository {
      */
     fun deleteSelectedContact(contact: Contact) : Completable
 
+    /**
+     * Delete all the contacts selected
+     *
+     * @return if operation is complete.
+     */
+    fun deleteAllSelectedContacts() : Completable
+
 }

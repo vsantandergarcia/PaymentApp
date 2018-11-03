@@ -7,6 +7,10 @@ import com.vsantander.paymentchallenge.presentation.summary.SummaryActivity
 import com.vsantander.paymentchallenge.utils.extension.afterTextChange
 import kotlinx.android.synthetic.main.activity_amount_selector.*
 import org.jetbrains.anko.startActivity
+import com.vsantander.paymentchallenge.presentation.view.InputFilterMinMax
+import android.text.InputFilter
+
+
 
 @BaseActivity.Animation(BaseActivity.MODAL)
 class AmountSelectorActivity: BaseActivity() {
@@ -23,13 +27,14 @@ class AmountSelectorActivity: BaseActivity() {
 
     private fun setUpViews() {
         stepperButton.isEnabled = false
+        amountEditText.filters = arrayOf<InputFilter>(InputFilterMinMax("0.0", "1000.0"))
         amountEditText.afterTextChange {
             stepperButton.isEnabled = it.isNotEmpty()
         }
-
         stepperButton.setTitle(R.string.amount_selector_summary)
         stepperButton.setOnClickListener {
-            startActivity<SummaryActivity>()
+            val floatAmount = amountEditText.text.toString().toFloat()
+            startActivity<SummaryActivity>(SummaryActivity.EXTRA_AMOUNT to floatAmount)
             finish()
         }
     }

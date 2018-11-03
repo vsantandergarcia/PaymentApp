@@ -24,10 +24,8 @@ import org.jetbrains.anko.startActivity
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 
-
-
 @BaseActivity.Animation(BaseActivity.FADE)
-class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
+class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -43,8 +41,11 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
         setContentView(R.layout.activity_contact_list)
         setUpViews()
         setUpViewModel()
-
         checkPermissions()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.loadContacts()
     }
 

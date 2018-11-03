@@ -7,7 +7,8 @@ import com.vsantander.paymentchallenge.presentation.base.adapter.ViewWrapper
 import com.vsantander.paymentchallenge.presentation.base.item.ItemView
 import com.vsantander.paymentchallenge.presentation.summary.item.SummaryItem
 
-class SummaryListAdapter : RecyclerViewAdapterBase<Contact, ItemView<Contact>>() {
+class SummaryListAdapter(private val amount: Float)
+    : RecyclerViewAdapterBase<Contact, ItemView<Contact>>() {
 
     override fun onCreateItemView(parent: ViewGroup, viewType: Int): ItemView<Contact> {
         return SummaryItem(parent.context)
@@ -20,8 +21,9 @@ class SummaryListAdapter : RecyclerViewAdapterBase<Contact, ItemView<Contact>>()
     override fun onBindViewHolder(holder: ViewWrapper<ItemView<Contact>>, position: Int) {
         val item = items[position]
 
-        holder.view.apply {
+        (holder.view as SummaryItem).apply {
             bind(item)
+            bindAmount(amount/items.size)
         }
     }
 }

@@ -26,4 +26,7 @@ interface SelectedContactsDao {
     @Query("DELETE FROM contactselected WHERE name =:name")
     fun delete(name: String)
 
+    @Query("DELETE FROM contactselected")
+    fun deleteAll()
+
 }

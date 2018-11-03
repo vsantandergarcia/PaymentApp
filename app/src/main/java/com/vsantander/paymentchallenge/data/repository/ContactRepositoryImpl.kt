@@ -66,7 +66,7 @@ class ContactRepositoryImpl @Inject constructor(
                             contactList.add(
                                     Contact(name = name,
                                             phone = number,
-                                            avatar = "",
+                                            avatar = null,
                                             isSelected = false))
                         }
                         pCur.close()
@@ -107,5 +107,10 @@ class ContactRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun deleteAllSelectedContacts(): Completable {
+        return Completable.fromCallable {
+            database.selectedContactsDao().deleteAll()
+        }
+    }
 
 }

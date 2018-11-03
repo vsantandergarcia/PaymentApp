@@ -33,7 +33,7 @@ class ContactItem @JvmOverloads constructor(
 
         Glide
                 .with(context)
-                .load(item.avatar)
+                .load(if (item.avatar.isNullOrBlank()) R.drawable.no_picture else item.avatar)
                 .transition(DrawableTransitionOptions.withCrossFade(Constants.DURATION_FADE_GLIDE))
                 .into(contactImageView)
     }

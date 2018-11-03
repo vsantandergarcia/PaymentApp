@@ -3,6 +3,7 @@ package com.vsantander.paymentchallenge.presentation.summary
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,10 +14,16 @@ import com.vsantander.paymentchallenge.presentation.model.Status
 import com.vsantander.paymentchallenge.presentation.summary.adapter.SummaryListAdapter
 import com.vsantander.paymentchallenge.utils.extension.observe
 import kotlinx.android.synthetic.main.activity_summary.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-@BaseActivity.Animation(BaseActivity.MODAL)
+@BaseActivity.Animation(BaseActivity.FADE)
 class SummaryActivity : BaseActivity() {
+
+    companion object {
+        const val EXTRA_AMOUNT = "EXTRA_AMOUNT"
+        private val SUCCESS_DELAY = TimeUnit.SECONDS.toMillis(2) // 2 seconds
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -25,20 +32,36 @@ class SummaryActivity : BaseActivity() {
 
     private lateinit var adapter: SummaryListAdapter
 
+    private val handler = Handler()
+
+    private val runnableFinishPayment: Runnable = Runnable {
+        if (!isFinishing) {
+            finish()
+        }
+    }
+
     /* Activity methods */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary)
-        setUpViews()
-        setUpViewModel()
+
+        intent?.extras?.getFloat(EXTRA_AMOUNT)?.let {
+            setUpViews(it)
+            setUpViewModel()
+        } ?: throw RuntimeException("bad initialization. not found some extras")
+    }
+
+    public override fun onDestroy() {
+        handler.removeCallbacks(runnableFinishPayment)
+        super.onDestroy()
     }
 
     /* setUp methods */
 
-    private fun setUpViews() {
+    private fun setUpViews(amount: Float) {
         setUpToolbar()
-        adapter = SummaryListAdapter()
+        adapter = SummaryListAdapter(amount)
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context,
@@ -48,7 +71,9 @@ class SummaryActivity : BaseActivity() {
 
         stepperButton.setTitle(R.string.summary_buy)
         stepperButton.setOnClickListener {
-            //TODO
+            stepperButton.isEnabled = false
+            progressBar.isVisible = true
+            viewModel.performFakePayment()
         }
     }
 
@@ -73,6 +98,17 @@ class SummaryActivity : BaseActivity() {
                 Snackbar.make(recyclerView, R.string.common_error, Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.retry) { viewModel.loadSelectedContacts() }
                         .show()
+                stepperButton.isEnabled = true
+            }
+        }
+
+        viewModel.paymentFinished.observe(this) { paymentFinished ->
+            paymentFinished ?: return@observe
+            if (paymentFinished) {
+                progressBar.isVisible = false
+                Snackbar.make(recyclerView, R.string.summary_payment_ok, Snackbar.LENGTH_SHORT)
+                        .show()
+                handler.postDelayed(runnableFinishPayment, SUCCESS_DELAY)
             }
         }
 

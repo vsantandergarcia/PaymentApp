@@ -29,13 +29,15 @@ class SummaryItem @JvmOverloads constructor(
             phoneTextView.text = it
         }
 
-        //TODO provisional
-        amountTextView.text = "120€"
-
         Glide
                 .with(context)
-                .load(item.avatar)
+                .load(if (item.avatar.isNullOrBlank()) R.drawable.no_picture else item.avatar)
                 .transition(DrawableTransitionOptions.withCrossFade(Constants.DURATION_FADE_GLIDE))
                 .into(contactImageView)
+    }
+
+    fun bindAmount(amount: Float) {
+        val res = "%.2f".format(amount) + " " + context.getString(R.string.summary_money)
+        amountTextView.text = res
     }
 }

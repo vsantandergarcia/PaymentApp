@@ -18,7 +18,7 @@ class ContactEntityMapper @Inject constructor() {
     fun fromEntity(value: Contact): ContactEntity = ContactEntity(
             name = value.name,
             phone = value.phone ?: "",
-            avatar = value.avatar
+            avatar = value.avatar ?: ""
     )
 
     fun fromEntity(values: List<Contact>): List<ContactEntity> = values.map { fromEntity(it) }
