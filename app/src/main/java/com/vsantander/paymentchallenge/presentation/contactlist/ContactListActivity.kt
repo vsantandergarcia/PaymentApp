@@ -66,6 +66,11 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
                     LinearLayoutManager.VERTICAL, false) as RecyclerView.LayoutManager
             adapter = this@ContactListActivity.adapter
         }
+
+        stepperButton.setTitle(R.string.contact_list_select_amount)
+        stepperButton.setOnClickListener {
+            //TODO
+        }
     }
 
     private fun setUpToolbar() {
@@ -77,7 +82,6 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
     private fun setUpViewModels() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ContactListViewModel::class.java)
-
 
         viewModel.resource.observe(this) { resource ->
             resource ?: return@observe
@@ -92,6 +96,11 @@ class ContactListActivity: BaseActivity(), EasyPermissions.PermissionCallbacks{
                         .setAction(R.string.retry) { viewModel.loadInfo() }
                         .show()
             }
+        }
+
+        viewModel.currentNumberSelectedContacts.observe(this) { numberSelectedContacts ->
+            numberSelectedContacts ?: return@observe
+            stepperButton.isEnabled = numberSelectedContacts > 0
         }
     }
 

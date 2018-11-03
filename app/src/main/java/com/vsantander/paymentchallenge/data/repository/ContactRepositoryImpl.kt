@@ -11,6 +11,7 @@ import com.vsantander.paymentchallenge.data.remote.utils.APIParamsProvider
 import com.vsantander.paymentchallenge.domain.model.Contact
 import com.vsantander.paymentchallenge.utils.Constants
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.zipWith
@@ -86,6 +87,10 @@ class ContactRepositoryImpl @Inject constructor(
     override fun getAllSelectedContacts(): Single<List<Contact>> {
         return database.selectedContactsDao().getAll()
                 .map { contactEntityMapper.toEntity(it) }
+    }
+
+    override fun getSelectedContactsCount(): Flowable<Int> {
+        return database.selectedContactsDao().count()
     }
 
     override fun saveSelectedContact(contact: Contact): Completable {

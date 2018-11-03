@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.vsantander.paymentchallenge.domain.model.Contact
 import com.vsantander.paymentchallenge.domain.usecase.DeleteSelectedContact
 import com.vsantander.paymentchallenge.domain.usecase.GetContacts
+import com.vsantander.paymentchallenge.domain.usecase.GetNumberSelectedContact
 import com.vsantander.paymentchallenge.domain.usecase.SaveSelectedContact
 import com.vsantander.paymentchallenge.presentation.base.viewmodel.BaseViewModel
 import com.vsantander.paymentchallenge.presentation.model.Resource
@@ -17,10 +18,17 @@ import javax.inject.Inject
 class ContactListViewModel @Inject constructor(
         private val getContacts: GetContacts,
         private val saveSelectedContact: SaveSelectedContact,
-        private val deleteSelectedContact: DeleteSelectedContact
+        private val deleteSelectedContact: DeleteSelectedContact,
+        private val getNumberSelectedContact: GetNumberSelectedContact
 ) : BaseViewModel() {
 
+    init {
+        getNumberSelectedContact()
+    }
+
     val resource = MutableLiveData<Resource<List<Contact>>>()
+
+    val currentNumberSelectedContacts = MutableLiveData<Int>()
 
     var readContactsPermissionAccepted = false
 
@@ -66,6 +74,22 @@ class ContactListViewModel @Inject constructor(
                         },
                         onError = {
                             Timber.e("deleteSelectedContact.onError ${it.message}")
+                        }
+                )
+    }
+
+    fun getNumberSelectedContact() {
+        disposables += getNumberSelectedContact.buildUseCase()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            Timber.d("getNumberSelectedContact.onNext")
+                            currentNumberSelectedContacts.value = it
+                        },
+                        onError = {
+                            Timber.e("getNumberSelectedContact.onError ${it.message}")
+                            currentNumberSelectedContacts.value = 0
                         }
                 )
     }

@@ -2,6 +2,7 @@ package com.vsantander.paymentchallenge.data.repository
 
 import com.vsantander.paymentchallenge.domain.model.Contact
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 interface ContactRepository {
@@ -26,6 +27,13 @@ interface ContactRepository {
      * @return List<Contact> The list of contacts mark as selected
      */
     fun getAllSelectedContacts(): Single<List<Contact>>
+
+    /**
+     * Gets the number of contacts mark as selected
+     *
+     * @return Int The number of contacts mark as selected
+     */
+     fun getSelectedContactsCount(): Flowable<Int>
 
     /**
      * Save a contact as a selected
