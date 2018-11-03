@@ -3,7 +3,7 @@ package com.vsantander.paymentchallenge.presentation.summary
 import android.arch.lifecycle.MutableLiveData
 import com.vsantander.paymentchallenge.domain.model.Contact
 import com.vsantander.paymentchallenge.domain.usecase.DeleteAllSelectedContacts
-import com.vsantander.paymentchallenge.domain.usecase.GetSelectedContacts
+import com.vsantander.paymentchallenge.domain.usecase.GetAllSelectedContacts
 import com.vsantander.paymentchallenge.domain.usecase.PerformFakePayment
 import com.vsantander.paymentchallenge.presentation.base.viewmodel.BaseViewModel
 import com.vsantander.paymentchallenge.presentation.model.Resource
@@ -15,7 +15,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SummaryViewModel @Inject constructor(
-        private val getSelectedContacts: GetSelectedContacts,
+        private val getAllSelectedContacts: GetAllSelectedContacts,
         private val performFakePayment: PerformFakePayment,
         private val deleteAllSelectedContacts: DeleteAllSelectedContacts
 ): BaseViewModel() {
@@ -31,7 +31,7 @@ class SummaryViewModel @Inject constructor(
     fun loadSelectedContacts() {
         resource.value = Resource.loading()
 
-        disposables += getSelectedContacts.buildUseCase()
+        disposables += getAllSelectedContacts.buildUseCase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

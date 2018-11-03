@@ -6,7 +6,7 @@ import com.vsantander.paymentchallenge.domain.usecase.base.SingleResponseUseCase
 import io.reactivex.Single
 import javax.inject.Inject
 
-class GetSelectedContacts @Inject constructor(
+class GetAllSelectedContacts @Inject constructor(
         private val repository: ContactRepositoryImpl
 ) : SingleResponseUseCase<List<Contact>>() {
 

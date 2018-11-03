@@ -7,7 +7,7 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
-class GetContacts @Inject constructor(
+class GetAllContacts @Inject constructor(
         private val repository: ContactRepositoryImpl
 ) : SingleUseCase<Boolean, List<Contact>>() {
 

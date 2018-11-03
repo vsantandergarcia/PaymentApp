@@ -3,7 +3,7 @@ package com.vsantander.paymentchallenge.presentation.contactlist
 import android.arch.lifecycle.MutableLiveData
 import com.vsantander.paymentchallenge.domain.model.Contact
 import com.vsantander.paymentchallenge.domain.usecase.DeleteSelectedContact
-import com.vsantander.paymentchallenge.domain.usecase.GetContacts
+import com.vsantander.paymentchallenge.domain.usecase.GetAllContacts
 import com.vsantander.paymentchallenge.domain.usecase.GetNumberSelectedContact
 import com.vsantander.paymentchallenge.domain.usecase.SaveSelectedContact
 import com.vsantander.paymentchallenge.presentation.base.viewmodel.BaseViewModel
@@ -16,7 +16,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ContactListViewModel @Inject constructor(
-        private val getContacts: GetContacts,
+        private val getAllContacts: GetAllContacts,
         private val saveSelectedContact: SaveSelectedContact,
         private val deleteSelectedContact: DeleteSelectedContact,
         private val getNumberSelectedContact: GetNumberSelectedContact
@@ -35,7 +35,7 @@ class ContactListViewModel @Inject constructor(
     fun loadContacts() {
         resource.value = Resource.loading()
 
-        disposables += getContacts.buildUseCase(readContactsPermissionAccepted)
+        disposables += getAllContacts.buildUseCase(readContactsPermissionAccepted)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
