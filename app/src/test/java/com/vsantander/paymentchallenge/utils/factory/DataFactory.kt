@@ -14,8 +14,12 @@ class DataFactory {
             return Random().nextBoolean()
         }
 
+        fun randomInt(): Int {
+            return Random().nextInt()
+        }
+
         fun randomFloat(): Float {
-            return Math.random().toFloat()
+            return Random().nextFloat()
         }
 
     }
