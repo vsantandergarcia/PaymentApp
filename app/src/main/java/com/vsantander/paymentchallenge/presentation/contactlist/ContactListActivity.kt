@@ -1,8 +1,10 @@
 package com.vsantander.paymentchallenge.presentation.contactlist
 
 import android.Manifest
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
@@ -17,12 +19,11 @@ import timber.log.Timber
 import javax.inject.Inject
 import pub.devrel.easypermissions.EasyPermissions
 import androidx.core.view.isVisible
-import com.vsantander.paymentchallenge.R.id.swipeRefreshLayout
 import com.vsantander.paymentchallenge.presentation.amountselector.AmountSelectorActivity
 import com.vsantander.paymentchallenge.utils.Constants
-import org.jetbrains.anko.startActivity
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
+
 
 @BaseActivity.Animation(BaseActivity.FADE)
 class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
@@ -42,11 +43,16 @@ class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
         setUpViews()
         setUpViewModel()
         checkPermissions()
+        viewModel.loadContacts()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadContacts()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AmountSelectorActivity.PAYMENT_FINISHED) {
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.loadContacts()
+            }
+        }
     }
 
     /* setUp methods */
@@ -73,7 +79,8 @@ class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
 
         stepperButton.setTitle(R.string.contact_list_select_amount)
         stepperButton.setOnClickListener {
-            startActivity<AmountSelectorActivity>()
+            val intent = Intent(this, AmountSelectorActivity::class.java)
+            startActivityForResult(intent, AmountSelectorActivity.PAYMENT_FINISHED)
         }
     }
 

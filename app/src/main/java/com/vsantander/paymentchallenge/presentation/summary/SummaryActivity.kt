@@ -1,5 +1,6 @@
 package com.vsantander.paymentchallenge.presentation.summary
 
+import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -23,6 +24,7 @@ class SummaryActivity : BaseActivity() {
     companion object {
         const val EXTRA_AMOUNT = "EXTRA_AMOUNT"
         private val SUCCESS_DELAY = TimeUnit.SECONDS.toMillis(2) // 2 seconds
+        const val PAYMENT_FINISHED = 0
     }
 
     @Inject
@@ -104,11 +106,18 @@ class SummaryActivity : BaseActivity() {
 
         viewModel.paymentFinished.observe(this) { paymentFinished ->
             paymentFinished ?: return@observe
+
+            progressBar.isVisible = false
+
             if (paymentFinished) {
-                progressBar.isVisible = false
+                setResult(Activity.RESULT_OK)
                 Snackbar.make(recyclerView, R.string.summary_payment_ok, Snackbar.LENGTH_SHORT)
                         .show()
                 handler.postDelayed(runnableFinishPayment, SUCCESS_DELAY)
+            } else {
+                Snackbar.make(recyclerView, R.string.summary_payment_error, Snackbar.LENGTH_SHORT)
+                        .show()
+                stepperButton.isEnabled = true
             }
         }
 

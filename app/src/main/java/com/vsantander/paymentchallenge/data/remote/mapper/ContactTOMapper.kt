@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class ContactTOMapper @Inject constructor() {
 
-    private fun toEntity(value: ContactTO): Contact = Contact(
+    fun toEntity(value: ContactTO): Contact = Contact(
             name = value.name,
             phone = "",
             avatar = AvatarUrlProvider.getAvatarFromThumbnail(value.thumbnail),
