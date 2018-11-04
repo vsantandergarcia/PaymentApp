@@ -1,0 +1,26 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="CardViewCustomFlat" parent="CardView">
+        <item name="cardCornerRadius">@dimen/carview_default_radius</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="RoundedEditTextLight" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@drawable/rectangle_round_stroke_black</item>
+    </style>
+
+</resources>

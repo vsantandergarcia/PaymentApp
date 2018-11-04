@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stepperButtonContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/greenHaze"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <TextView
+        android:id="@+id/stepperButtonTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/stepper_button_text"
+        android:gravity="center_horizontal|bottom"
+        android:padding="@dimen/margin5"
+        android:textAppearance="@style/TextBrandonGrotesqueBold16.White"
+        tools:text="@string/contact_list_select_amount" />
+
+    <ImageView
+        android:id="@+id/stepperButtonImageView"
+        android:layout_width="@dimen/contact_view_stepper_height_icon"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/contact_list_stepper_button_img"
+        android:src="@drawable/arrow_down_white" />
+
+</merge>

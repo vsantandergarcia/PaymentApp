@@ -2,8 +2,6 @@ package com.vsantander.paymentchallenge.repository
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.content.ContentResolver
-import android.database.Cursor
-import android.provider.ContactsContract
 import com.vsantander.paymentchallenge.data.persistence.Database
 import com.vsantander.paymentchallenge.data.persistence.dao.SelectedContactsDao
 import com.vsantander.paymentchallenge.data.persistence.mapper.ContactEntityMapper
@@ -53,9 +51,6 @@ class ContactRepositoryTest {
 
     @Mock
     lateinit var contentResolver: ContentResolver
-
-    @Mock
-    lateinit var cursor: Cursor
 
     lateinit var contactTOMapper: ContactTOMapper
 

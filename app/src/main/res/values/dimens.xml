@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="carview_default_radius">20dp</dimen>
+    <dimen name="rounded_edittext_default_radius">25dp</dimen>
+    <dimen name="list_title_padding">6dp</dimen>
+
+    <!-- common dimens -->
+    <dimen name="margin5">5dp</dimen>
+    <dimen name="margin10">10dp</dimen>
+
+    <!--Text size dimens-->
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+
+    <!-- Contacts List -->
+    <dimen name="contact_item_radius">20dp</dimen>
+    <dimen name="contact_item_elevation">0dp</dimen>
+    <dimen name="contact_item_img_height">100dp</dimen>
+    <dimen name="contact_view_stepper_height_icon">30dp</dimen>
+    <dimen name="contact_view_stepper_height">48dp</dimen>
+
+</resources>

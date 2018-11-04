@@ -104,7 +104,7 @@ class SummaryActivity : BaseActivity() {
             if (resource.status == Status.SUCCESS) {
                 adapter.setItems(resource.data!!)
             } else if (resource.status == Status.FAILED) {
-                Snackbar.make(recyclerView, R.string.common_error, Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(stepperButton, R.string.common_error, Snackbar.LENGTH_LONG)
                         .setAction(R.string.retry) { viewModel.loadSelectedContacts() }
                         .show()
                 stepperButton.isEnabled = true
@@ -119,11 +119,11 @@ class SummaryActivity : BaseActivity() {
 
             if (paymentProcess.status == Status.SUCCESS) {
                 setResult(Activity.RESULT_OK)
-                Snackbar.make(recyclerView, R.string.summary_payment_ok, Snackbar.LENGTH_SHORT)
+                Snackbar.make(stepperButton, R.string.summary_payment_ok, Snackbar.LENGTH_SHORT)
                         .show()
                 handler.postDelayed(runnableFinishPayment, SUCCESS_DELAY)
             } else if (paymentProcess.status == Status.FAILED) {
-                Snackbar.make(recyclerView, R.string.summary_payment_error, Snackbar.LENGTH_SHORT)
+                Snackbar.make(stepperButton, R.string.summary_payment_error, Snackbar.LENGTH_SHORT)
                         .show()
             }
         }

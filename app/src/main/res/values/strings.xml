@@ -1,0 +1,34 @@
+<resources>
+    <!-- Common -->
+    <string name="app_name">PaymentApp</string>
+    <string name="common_error">Oooops… Something went wrong. Check your internet connection and</string>
+    <string name="retry">Retry</string>
+    <string name="close">Close</string>
+
+    <!-- Permissions -->
+    <string name="permission_read_contacts">PaymentApp needs the read contacts permission in order to show your contact list.</string>
+
+    <!-- Splash -->
+    <string name="splash_icon">SplashIcon</string>
+
+    <!-- Contact List -->
+    <string name="contact_item_img">ContactItemImg</string>
+    <string name="arrow_up_img">ArrowUpImg</string>
+    <string name="arrow_down_img">ArrowDownImg</string>
+    <string name="contact_list_select_amount">Select Amount</string>
+    <string name="contact_list_stepper_button_img">StepperBtnImg</string>
+    <string name="contact_list_title">Please select some contacts</string>
+
+    <!-- Amount Selector -->
+    <string name="amount_selector_title">Select amount</string>
+    <string name="amount_selector_summary">Summary</string>
+    <string name="amount_selector_hint">Add amount</string>
+
+    <!-- Summary -->
+    <string name="summary_buy">Buy</string>
+    <string name="summary_money">€</string>
+    <string name="summary_title">Summary</string>
+    <string name="summary_payment_ok">Payment finished successfully</string>
+    <string name="summary_payment_error">Payment error, verify the information and try again later</string>
+
+</resources>

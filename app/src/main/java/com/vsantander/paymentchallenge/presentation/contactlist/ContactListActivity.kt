@@ -115,8 +115,8 @@ class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
                 adapter.setItems(resource.data!!)
             } else if (resource.status == Status.FAILED) {
                 swipeRefreshLayout.isRefreshing = false
-                Snackbar.make(recyclerView, resource.msg ?: getString(R.string.common_error),
-                        Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(arrowDownButton, resource.msg ?: getString(R.string.common_error),
+                        Snackbar.LENGTH_LONG)
                         .setAction(R.string.retry) { viewModel.loadContacts() }
                         .show()
             }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardViewCustomFlat"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.v7.widget.CardView">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/contactImageView"
+            android:layout_width="@dimen/contact_item_img_height"
+            android:layout_height="@dimen/contact_item_img_height"
+            android:layout_margin="@dimen/margin10"
+            android:contentDescription="@string/contact_item_img"
+            android:scaleType="centerCrop"
+            android:src="@drawable/gradient_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/contactNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/margin10"
+            android:textAppearance="@style/TextBrandonGrotesqueBold16.Black"
+            app:layout_constraintBottom_toTopOf="@+id/phoneTextView"
+            app:layout_constraintLeft_toRightOf="@+id/contactImageView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@sample/contact.json/name" />
+
+        <TextView
+            android:id="@+id/phoneTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/margin10"
+            android:textAppearance="@style/TextBrandonGrotesqueBold16.Black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/contactImageView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contactNameTextView"
+            tools:text="@sample/contact.json/phone" />
+
+        <CheckedTextView
+            android:id="@+id/selectorChecked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin10"
+            android:background="@drawable/selector_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</merge>

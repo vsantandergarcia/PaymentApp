@@ -14,7 +14,6 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import io.reactivex.rxkotlin.zipWith
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,15 +48,14 @@ class ContactRepositoryImpl @Inject constructor(
         val contactList = arrayListOf<Contact>()
         val cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null)
-        cursor?.let { cursor ->
-
-            if (cursor.count > 0) {
-                while (cursor.moveToNext()) {
-                    val id = cursor.getString(
-                            cursor.getColumnIndex(ContactsContract.Contacts._ID))
-                    val name = cursor.getString(
-                            cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                    if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+        cursor?.let {
+            if (it.count > 0) {
+                while (it.moveToNext()) {
+                    val id = it.getString(
+                            it.getColumnIndex(ContactsContract.Contacts._ID))
+                    val name = it.getString(
+                            it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                    if (Integer.parseInt(it.getString(it.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
                         val pCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                                 arrayOf(id), null)
@@ -73,7 +71,7 @@ class ContactRepositoryImpl @Inject constructor(
                     }
                 }
             }
-            cursor.close()
+            it.close()
         }
 
         return Single.just(contactList)
