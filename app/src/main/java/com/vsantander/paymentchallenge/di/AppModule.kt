@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.ContentResolver
 import com.vsantander.paymentchallenge.data.persistence.Database
 import com.vsantander.paymentchallenge.data.remote.RestClient
+import com.vsantander.paymentchallenge.data.remote.interceptors.ServerErrorInterceptor
 import com.vsantander.paymentchallenge.presentation.PaymentApp
 import com.vsantander.paymentchallenge.utils.Constants
 import dagger.Module
@@ -21,11 +22,12 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesRestClient(): RestClient {
+    fun providesRestClient(serverErrorInterceptor: ServerErrorInterceptor): RestClient {
         val clientBuilder = OkHttpClient.Builder()
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
         clientBuilder.addInterceptor(loggingInterceptor)
+        clientBuilder.addInterceptor(serverErrorInterceptor)
         clientBuilder.readTimeout(Constants.TIMEOUT_WS.toLong(), TimeUnit.SECONDS)
         clientBuilder.connectTimeout(Constants.TIMEOUT_WS.toLong(), TimeUnit.SECONDS)
 
@@ -37,7 +39,11 @@ class AppModule {
                 .build()
                 .create<RestClient>(RestClient::class.java)
     }
-    
+
+    @Provides
+    fun providesServerErrorInterceptor(): ServerErrorInterceptor = ServerErrorInterceptor()
+
+
     @Provides
     fun providesContentResolver(applicationContext: PaymentApp): ContentResolver =
             applicationContext.contentResolver
