@@ -8,8 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.widget.LinearLayout
 import com.vsantander.paymentchallenge.R
 import com.vsantander.paymentchallenge.presentation.base.activity.BaseActivity
 import com.vsantander.paymentchallenge.presentation.contactlist.adapter.ContactListAdapter
@@ -24,6 +23,7 @@ import com.vsantander.paymentchallenge.presentation.amountselector.AmountSelecto
 import com.vsantander.paymentchallenge.utils.Constants
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
+import com.vsantander.paymentchallenge.presentation.view.SmoothScrollLinearLayoutManager
 
 
 @BaseActivity.Animation(BaseActivity.FADE)
@@ -76,9 +76,16 @@ class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
             viewModel.loadContacts()
         }
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(context,
-                    LinearLayoutManager.VERTICAL, false) as RecyclerView.LayoutManager
+            layoutManager = SmoothScrollLinearLayoutManager(context,
+                    LinearLayout.VERTICAL, false)
             adapter = this@ContactListActivity.adapter
+        }
+
+        arrowUpButton.setOnClickListener {
+            recyclerView.smoothScrollToPosition(0)
+        }
+        arrowDownButton.setOnClickListener {
+            recyclerView.smoothScrollToPosition(recyclerView.adapter!!.itemCount-1)
         }
 
         stepperButton.setTitle(R.string.contact_list_select_amount)

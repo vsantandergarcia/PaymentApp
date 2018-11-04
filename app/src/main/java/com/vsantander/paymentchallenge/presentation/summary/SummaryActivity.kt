@@ -8,11 +8,13 @@ import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.vsantander.paymentchallenge.R
 import com.vsantander.paymentchallenge.presentation.base.activity.BaseActivity
 import com.vsantander.paymentchallenge.presentation.model.Status
 import com.vsantander.paymentchallenge.presentation.summary.adapter.SummaryListAdapter
+import com.vsantander.paymentchallenge.presentation.view.SmoothScrollLinearLayoutManager
 import com.vsantander.paymentchallenge.utils.extension.observe
 import kotlinx.android.synthetic.main.activity_summary.*
 import java.util.concurrent.TimeUnit
@@ -66,9 +68,16 @@ class SummaryActivity : BaseActivity() {
         adapter = SummaryListAdapter(amount)
 
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(context,
-                    LinearLayoutManager.VERTICAL, false) as RecyclerView.LayoutManager
+            layoutManager = SmoothScrollLinearLayoutManager(context,
+                    LinearLayout.VERTICAL, false)
             adapter = this@SummaryActivity.adapter
+        }
+
+        arrowUpButton.setOnClickListener {
+            recyclerView.smoothScrollToPosition(0)
+        }
+        arrowDownButton.setOnClickListener {
+            recyclerView.smoothScrollToPosition(recyclerView.adapter!!.itemCount-1)
         }
 
         stepperButton.setTitle(R.string.summary_buy)

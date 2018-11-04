@@ -17,6 +17,7 @@ class ServerErrorInterceptor : Interceptor {
         val bodyString = response.body()!!.string()
 
         if (!response.isSuccessful) {
+            //http errors
             ServerErrorHandler.throwHttpErrorIfExists(response)
 
             val type = object : TypeToken<DefaultResponse<Any>>() {}.type
