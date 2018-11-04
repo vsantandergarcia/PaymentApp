@@ -22,7 +22,7 @@ class SummaryViewModel @Inject constructor(
 
     val resource = MutableLiveData<Resource<List<Contact>>>()
 
-    val paymentFinished = MutableLiveData<Boolean>()
+    val paymentProcess = MutableLiveData<Resource<Boolean>>()
 
     init {
         loadSelectedContacts()
@@ -47,6 +47,8 @@ class SummaryViewModel @Inject constructor(
     }
 
     fun performFakePayment() {
+        resource.value = Resource.loading()
+
         disposables += performFakePayment.buildUseCase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,6 +59,7 @@ class SummaryViewModel @Inject constructor(
                         },
                         onError = {
                             Timber.e("performFakePayment.onError ${it.message}")
+                            paymentProcess.value = Resource.error(it)
                         }
                 )
     }
@@ -69,12 +72,12 @@ class SummaryViewModel @Inject constructor(
                 .subscribeBy(
                         onComplete = {
                             Timber.d("deleteAllSelectedContacts.onComplete")
-                            paymentFinished.value = true
+                            paymentProcess.value = Resource.success(true)
 
                         },
                         onError = {
                             Timber.e("deleteAllSelectedContacts.onError ${it.message}")
-                            paymentFinished.value = false
+                            paymentProcess.value = Resource.error(it)
                         }
                 )
     }

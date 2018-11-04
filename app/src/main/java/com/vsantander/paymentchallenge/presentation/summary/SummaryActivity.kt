@@ -73,8 +73,6 @@ class SummaryActivity : BaseActivity() {
 
         stepperButton.setTitle(R.string.summary_buy)
         stepperButton.setOnClickListener {
-            stepperButton.isEnabled = false
-            progressBar.isVisible = true
             viewModel.performFakePayment()
         }
     }
@@ -92,7 +90,7 @@ class SummaryActivity : BaseActivity() {
         viewModel.resource.observe(this) { resource ->
             resource ?: return@observe
 
-            progressBar.isVisible = resource == Status.LOADING
+            progressBar.isVisible = resource.status == Status.LOADING
 
             if (resource.status == Status.SUCCESS) {
                 adapter.setItems(resource.data!!)
@@ -104,20 +102,20 @@ class SummaryActivity : BaseActivity() {
             }
         }
 
-        viewModel.paymentFinished.observe(this) { paymentFinished ->
-            paymentFinished ?: return@observe
+        viewModel.paymentProcess.observe(this) { paymentProcess ->
+            paymentProcess ?: return@observe
 
-            progressBar.isVisible = false
+            progressBar.isVisible = paymentProcess.status == Status.LOADING
+            stepperButton.isEnabled = paymentProcess.status != Status.FAILED
 
-            if (paymentFinished) {
+            if (paymentProcess.status == Status.SUCCESS) {
                 setResult(Activity.RESULT_OK)
                 Snackbar.make(recyclerView, R.string.summary_payment_ok, Snackbar.LENGTH_SHORT)
                         .show()
                 handler.postDelayed(runnableFinishPayment, SUCCESS_DELAY)
-            } else {
+            } else if (paymentProcess.status == Status.FAILED) {
                 Snackbar.make(recyclerView, R.string.summary_payment_error, Snackbar.LENGTH_SHORT)
                         .show()
-                stepperButton.isEnabled = true
             }
         }
 

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
@@ -70,7 +71,10 @@ class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
             }
         }
 
-        swipeRefreshLayout.setOnRefreshListener { viewModel.loadContacts() }
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = true
+            viewModel.loadContacts()
+        }
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context,
                     LinearLayoutManager.VERTICAL, false) as RecyclerView.LayoutManager
@@ -97,12 +101,13 @@ class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
         viewModel.resource.observe(this) { resource ->
             resource ?: return@observe
 
-            swipeRefreshLayout.isRefreshing = resource == Status.LOADING
-            progressBar.isVisible = resource == Status.LOADING
+            progressBar.isVisible = resource.status == Status.LOADING
 
             if (resource.status == Status.SUCCESS) {
+                swipeRefreshLayout.isRefreshing = false
                 adapter.setItems(resource.data!!)
             } else if (resource.status == Status.FAILED) {
+                swipeRefreshLayout.isRefreshing = false
                 Snackbar.make(recyclerView, R.string.common_error, Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.retry) { viewModel.loadContacts() }
                         .show()
@@ -135,8 +140,10 @@ class ContactListActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
 
-        viewModel.readContactsPermissionAccepted = true
-        viewModel.loadContacts()
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            viewModel.readContactsPermissionAccepted = true
+            viewModel.loadContacts()
+        }
     }
 
     @AfterPermissionGranted(Constants.READ_CONTACTS_PERMISSION)
