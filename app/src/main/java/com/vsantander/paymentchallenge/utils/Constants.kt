@@ -2,7 +2,7 @@ package com.vsantander.paymentchallenge.utils
 
 object Constants {
 
-    const val APP_BASE_URL = "https://gateway.marvel.com"//"https://developer.marvel.com"
+    const val APP_BASE_URL = "https://gateway.marvel.com"
     const val TIMEOUT_WS = 20 // in seconds
     const val API_KEY = "c403101341a0c5e75ea4f121d6e8385e"
     const val LIMIT_CHARACTERS = 50
